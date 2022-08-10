@@ -1,0 +1,17 @@
+<div class="container">
+    Welcome!
+    <form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+        <p>
+            Please input your username
+            <input formControlName="name" id="name" placeholder="Your name"/>
+        </p>
+        <p>
+            Please input your password
+            <input type="password" formControlName="password" id="password" placeholder="Your passsword" />
+        </p>
+        <p>
+            <button class="btn btn-primary" type="submit" >Login</button>
+        </p>
+    </form>
+    <a routerLink="/register">Not a User? Please register here!</a>
+</div>

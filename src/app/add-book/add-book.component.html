@@ -1,0 +1,40 @@
+<div style="text-align:center">
+  <h1>
+    Add Your Book
+  </h1>
+</div>
+  <div class="container">
+    <form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+      <div class="form-group"
+        [ngClass]="{'has-error': createForm.get('name').errors && (createForm.get('name').touched || createForm.get('name').dirty)}">
+        <label for="name">Name:</label>
+          <input type="text" formControlName="name" class="form-control" id="name" required>
+            <span class="help-block" *ngIf="createForm.get('name').errors && (createForm.get('name').touched || createForm.get('name').dirty)">
+              <span *ngIf="createForm.get('name').errors.required">
+                Name of Book is required.
+              </span>
+            </span>
+      </div>
+      <div class="form-group"
+      [ngClass]="{'has-error': createForm.get('author').errors && (createForm.get('author').touched || createForm.get('author').dirty)}">
+        <label for="author">Author:</label>
+        <input type="text" formControlName="author" class="form-control" id="author" required>
+        <span class="help-block" *ngIf="createForm.get('author').errors && (createForm.get('author').touched || createForm.get('author').dirty)">
+          <span *ngIf="createForm.get('author').errors.required">
+            Author of Book is not specified.
+          </span>
+        </span>
+      </div>
+      <div class="form-group-synopsis"
+      [ngClass]="{'has-error': createForm.get('synopsis').errors && (createForm.get('synopsis').touched || createForm.get('synopsis').dirty)}">
+        <label for="synopsis">Synopsis:</label>
+        <input type="text" formControlName="synopsis" class="form-control" id="synopsis" required>
+        <span class="help-block" *ngIf="createForm.get('synopsis').errors && (createForm.get('synopsis').touched || createForm.get('synopsis').dirty)">
+          <span *ngIf="createForm.get('synopsis').errors.required">
+            The synopsis of the book is not filled.
+          </span>
+        </span>
+      </div>
+      <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+  </div>

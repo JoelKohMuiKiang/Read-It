@@ -1,0 +1,50 @@
+.book-profile-page {
+    position: relative;
+    top: 20px;
+}
+
+.synopsis {
+    text-decoration: underline;
+}
+
+a {
+    position: relative;
+    text-decoration: underline;
+}
+
+.aligned {
+    display: flex;
+    align-items: center;
+}
+
+img {
+    width: 8%;
+}
+  
+li {
+    padding: 10px;
+}
+
+ul.no-bullet {
+    list-style-type: none;
+}
+
+.comment {
+    margin-top: 10px;
+}
+
+.comments {
+    text-decoration: underline;
+}
+
+.container .book-comments {
+    margin-top: 10px;
+}
+
+.addComment {
+    margin-top: 10px;
+}
+
+.container .book-synopsis {
+    margin-top: 10px;
+}

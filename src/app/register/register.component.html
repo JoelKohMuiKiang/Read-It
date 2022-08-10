@@ -1,0 +1,18 @@
+<div class="container">
+    <form [formGroup]="registerForm" novalidate (ngSubmit)="onSubmit()">
+        <p>
+            Please state your name
+            <input formControlName="name" id="name" placeholder="Your name" />
+        </p>
+        <p>
+            Please input your password
+            <input formControlName="password" id="password" placeholder="Your password" />
+        </p>
+        <p>
+            What role do you want to have
+            <input formControlName="role" id="role" placeholder="user/author" />
+        </p>
+        <p><button class="btn btn-primary" type="submit">Register</button></p>
+    </form>
+    <a routerLink="/login">Are you a registered user? Please login here!</a>
+</div>

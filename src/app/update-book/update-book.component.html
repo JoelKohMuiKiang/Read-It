@@ -1,0 +1,43 @@
+<div style="text-align:center">
+  <h1>
+    Edit Your Book
+  </h1>
+</div>
+<div class="container">
+  <form [formGroup]="updateForm">
+    <div class="form-group"
+      [ngClass]="{'has-error': updateForm.get('name').errors && (updateForm.get('name').touched || updateForm.get('name').dirty)}">
+      <label for="name">Name:</label>
+      <input type="text" formControlName="name" class="form-control" id="name" required>
+      <span class="help-block"
+        *ngIf="updateForm.get('name').errors && (updateForm.get('name').touched || updateForm.get('name').dirty)">
+        <span *ngIf="updateForm.get('name').errors.required">
+          Name of Book is required.
+        </span>
+      </span>
+    </div>
+    <div class="form-group"
+      [ngClass]="{'has-error': updateForm.get('author').errors && (updateForm.get('author').touched || updateForm.get('author').dirty)}">
+      <label for="author">Author:</label>
+      <input type="text" formControlName="author" class="form-control" id="author" required>
+      <span class="help-block"
+        *ngIf="updateForm.get('author').errors && (updateForm.get('author').touched || updateForm.get('author').dirty)">
+        <span *ngIf="updateForm.get('author').errors.required">
+          Author of Book is not specified.
+        </span>
+      </span>
+    </div>
+    <div class="form-group-synopsis"
+      [ngClass]="{'has-error': updateForm.get('synopsis').errors && (updateForm.get('synopsis').touched || updateForm.get('synopsis').dirty)}">
+      <label for="synopsis">Synopsis:</label>
+      <input type="text" formControlName="synopsis" class="form-control" id="synopsis" required>
+      <span class="help-block"
+        *ngIf="updateForm.get('synopsis').errors && (updateForm.get('synopsis').touched || updateForm.get('synopsis').dirty)">
+        <span *ngIf="updateForm.get('synopsis').errors.required">
+          The synopsis of the book is not filled.
+        </span>
+      </span>
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Edit</button>
+  </form>
+</div>
