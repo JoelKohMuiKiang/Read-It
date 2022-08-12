@@ -15,19 +15,23 @@ const ObjectId = require('mongodb').ObjectId;
 
 // importing bcrypt in order to perform password hashing
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const e = require('express');
+const secret = 'secret'
 
 //declaring and initializing a BCRYPT_SALT_ROUND constant to add salt to the hashing (Salts help to create unique passwords even if passwords from different users are different)
 const BCRYPT_SALT_ROUNDS = 12;
 
-var db;
-MongoClient.connect('mongodb+srv://JoeJoe:Password@readit.4g2rw.mongodb.net/readItData?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}, (err, database) => {
-    if (err) return console.log(err);
-    db = database.db('readItData');
-});
+const client = new MongoClient('mongodb+srv://JoeJoe:Password@readit.4g2rw.mongodb.net/readItData?retryWrites=true&w=majority')
+const db = client.db('readItData');
+// var db;
+// MongoClient.connect('mongodb+srv://JoeJoe:Password@readit.4g2rw.mongodb.net/readItData?retryWrites=true&w=majority', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// }, (err, database) => {
+//     if (err) return console.log(err);
+//     db = database.db('readItData');
+// });
 
 // add new book into database
 router.route('/books').post(function (req, res) {
@@ -47,19 +51,22 @@ router.route('/books').get(function (req, res) {
 })
 
 //retrieve book information from database based on id
-router.route('/books/:id').get(function (req, res) {
-    db.collection('books').findOne({'_id': ObjectId(req.params._id) }, (err,
-        results) => {
-            res.send(results);
-        })
+router.route('/books/:_id').get(function (req, res) {
+    db.collection('books').findOne({ '_id': ObjectId(req.params._id) }, (err,results) => {
+        res.send(results);
+    })
 })
 
 // delete book based on id
-router.route('/books/:_id').delete(function (req, res) {
-    db.collection('books').deleteOne({ '_id': ObjectId(req.params._id) }, (err,
-        results) => {
-        res.send(results);
-    });
+router.route('/books/:_id/:token').delete(function (req, res) {
+    try {
+        var decoded = jwt.verify(req.params.token, secret);
+        db.collection('books').deleteOne({ '_id': ObjectId(req.params._id) }, (err,results) => {
+            res.send(results);
+        });
+    } catch (error) {
+        res.send({result: 'invalid token'})
+    }
 });
 
 // update books information based on id
@@ -72,35 +79,54 @@ router.route('/books/:_id').put(function (req, res) {
 });
 
 // creating a route '/loginUser' to validate the username and password with MongoDB and to return the user's role and login if successful
-router.route('/loginUser').post(function(req, res2) {
+router.route('/loginUser').post(function (req, res2) {
     var username = req.body.username;
-    var password = req.body.password;
-    db.collection('users').findOne({'name': username}, {password: 1, role: 1, _id: 0}, function(err, result) {
-        if (result == null) res2.send([{'login': false}]);
-        else {
-            bcrypt.compare(password, result.password, function(err, res) {
-                if(err || res == false) {
-                    res2.send([{'login': false}]);
+    var pw = req.body.password;
+    db.collection('users').findOne({ 'name': username }, function (err, result) {
+        if (result == null) {
+            res2.send([{ 'login': false }]);
+        } else {
+            bcrypt.compare(pw, result.password, function (err, res) {
+                if (err || res == false) {
+                    res2.send([{ 'login': false }]);
                 } else {
-                    res2.send([{'login': true, 'role': result.role}]);
+                    var token = jwt.sign({ "username": username }, secret, { expiresIn: '1h' }); // set a variable called token that allow user to autheticate to the website for a certain period of time. 
+                    console.log(token);
+                    res2.send([{ 'login': true, 'role': result.role, 'token': token }]);
+                    
                 }
             });
         }
     });
 });
 
+//creating a function 
+
 //creaing a route '/registerUser' to store the username and password into MongoDb
-router.route('/registerUser').post(function(req, res) {
+router.route('/registerUser').post(function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
     var role = req.body.role;
-    bcrypt.hash(password, BCRYPT_SALT_ROUNDS, function(err, hash) {
-        db.collection('users').insertOne({'name': username, 'password': hash, 'role': role}, (err, result) => {
-            if (err) return console.log(err)
-            console.log('User has been registered.')
-            res.send(result);
-        });
-    });
+    db.collection('users').findOne({ 'name': username }, function (err, result) {
+        if (result == null) {
+            bcrypt.hash(password, BCRYPT_SALT_ROUNDS, function (err, hash) {
+                db.collection('users').insertOne({ 'name': username, 'password': hash, 'role': role }, (err, result) => {
+                    if (err) {
+                        return console.log(err)
+                    } else {
+                        console.log('User has been registered.')
+                        res.send({"userAdded": true});
+                    }
+                });
+            });
+        } else {
+            res.send({"userAdded": false})
+        }
+    })
+})
+
+//creating a route to comment on book based on the id
+router.route('/books/:_id').post(function (res, req) {
 })
 
 module.exports = router;

@@ -27,13 +27,14 @@ export class LoginComponent implements OnInit {
       this.loginForm.value.name, 
       this.loginForm.value.password).subscribe(data => {
         this.results = data;
-        console.log(data);
-        if (this.results[0])
+        if (this.results[0].login)
         {
-          this.authenticationService.setSecureToken(this.loginForm.value.name);
+          this.authenticationService.setSecureToken(this.loginForm.value.name, this.results[0].token);
           this.router.navigateByUrl('/displayBook');
           this.authenticationService.setUserRole(this.results[0].role);
-        } 
+        } else {
+          console.log("no such user")
+        }
       });
   }
 

@@ -20,11 +20,11 @@ const routes: Routes = [
   {path: 'nav', component: NavComponent},
   {path: 'footer', component: FooterComponent},
   {path: 'addBook', component: AddBookComponent, canActivate: [AuthGuard], data: {permission: {only: ['author']}}},
-  {path: 'displayBook', component: DisplayBookComponent, canActivate: [AuthGuard], data: {permission: {only: ['user', 'author']}}},
+  {path: 'displayBook', component: DisplayBookComponent},
   {path: 'updateBook/:id', component: UpdateBookComponent, canActivate: [AuthGuard], data: {permission: {only: ['author']}}},
   {path: 'deleteBook', component: DeleteBookComponent},
   {path: 'profile', component: ProfileComponent},
-  {path: 'bookDetails/:id', component: BookDetailsIdComponent, canActivate: [AuthGuard], data: {permission: {only: ['user', 'author']}}},
+  {path: 'bookDetails/:id', component: BookDetailsIdComponent},
   {path: 'register', component:RegisterComponent},
   {path: 'login', component:LoginComponent},
   {path: '', component: DisplayBookComponent, pathMatch: 'full'}

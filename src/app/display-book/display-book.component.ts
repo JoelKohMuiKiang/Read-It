@@ -53,7 +53,7 @@ export class DisplayBookComponent implements OnInit {
     // console.log(this.authenticationService.isAuthor());
     
     if (this.authenticationService.isLoggedIn() && this.authenticationService.isAuthor())
-    {this.booksService.deleteBook(_id).subscribe(results => {
+    {this.booksService.deleteBook(_id, sessionStorage.getItem('token')).subscribe(results => {
       location.reload();
     })}
     return false

@@ -22,14 +22,14 @@ export class BooksService {
         return this.http.post<Books[]>(this.url, {'name': name, 'author': author, 'synopsis': synopsis})
     }
 
-    addComments(id: number, item: Comments): void{
+    addComments(_id: number, comment: string): void{
         // const i = listofBooks.findIndex(b => b._id === id)
         // listofBooks[i].comments.push(item);
     }
 
     //perform HTTP get request to /api/books/_id
-    getBook (_id: number) {
-        return this.http.get<Books[]>(this.url + '/' + _id);
+    getBook (_id: string) {
+        return this.http.get<any[]>(this.url + '/' + _id);
     }
 
     // perform HTTP put request to /api/books/_id
@@ -38,8 +38,8 @@ export class BooksService {
     }
 
     //perform HTTP delete request to /api/books
-    deleteBook(_id: number) {
-        return this.http.delete<Books[]> (this.url + '/' + _id);
+    deleteBook(_id: number, token: string) {
+        return this.http.delete<Books[]> (this.url + '/' + _id + '/' + token);
     }
 
     // getBooks(): Books[]{

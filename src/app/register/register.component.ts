@@ -27,8 +27,15 @@ export class RegisterComponent implements OnInit {
       this.registerForm.value.name,
       this.registerForm.value.password,
       this.registerForm.value.role
-      ).subscribe();
-      this.router.navigateByUrl('/displayBook');
+      ).subscribe(value => {
+        let data: any = value;
+        if (data.userAdded == true) {
+          console.log(data);
+          this.router.navigateByUrl('/displayBook');
+        } else {
+          console.log(data);
+        }
+      });
   }
 
 }

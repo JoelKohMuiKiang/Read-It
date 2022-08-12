@@ -4,6 +4,7 @@ import { Books } from '../books';
 import { BooksService } from '../books.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Comments } from '../comments';
+import { ObjectId } from 'mongodb';
 
 @Component({
   selector: 'app-book-details-id',
@@ -11,21 +12,27 @@ import { Comments } from '../comments';
   styleUrls: ['./book-details-id.component.css']
 })
 export class BookDetailsIdComponent implements OnInit {
-  listofBooks: Books [] = [];
+  listofBooks: any;
+  _id: string
   
 
   constructor(private route: ActivatedRoute, private booksService: BooksService, private fb: FormBuilder) { 
-    this.booksService.getBooks().subscribe(value => {
-      this.listofBooks = value;
-      booksService.listofBooks = value;
-      console.log(this.listofBooks)
-    });
+      this.route.params.subscribe(params => {
+        this._id = params['id'];
+
+        this.booksService.getBook(this._id).subscribe(value => {
+          this.listofBooks = value;
+          booksService.listofBooks = value;
+          console.log(this.listofBooks)
+        });
+      })  
+    
   }
 
   // ngOnInit(): void {
   //   this.sub = this.route.params.subscribe(params => {
   //     this.id = +params['id'];
-  //     // const i = this.service.getBooks().findIndex(b => b._id === this.id)
+  //     const i = this.service.getBooks().findIndex(b => b._id === this.id)
   //     this.book = this.service.getBook(this.id);
   //   })  
   // }

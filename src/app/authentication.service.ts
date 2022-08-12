@@ -28,8 +28,9 @@ export class AuthenticationService {
   }
 
   //save the username into the session storage
-  setSecureToken(secure_token: string) {
+  setSecureToken(secure_token: string, token) {
     sessionStorage.setItem('LoggedIn', secure_token)
+    sessionStorage.setItem('token', token)
   }
 
   //retrieve the username from the session storage
@@ -60,12 +61,12 @@ export class AuthenticationService {
 
   //returns true if an author had logged into the web app
   isAuthor() {
-    return this.getUserRole() == "admin";
+    return this.getUserRole() == "author";
   }
 
   //returns true if a normal user had logged into the web app
   isUser() {
-    return (this.getUserRole() == "user" || this.getUserRole() == "admin");
+    return (this.getUserRole() == "user" || this.getUserRole() == "author");
   }
 
 }
