@@ -33,12 +33,20 @@ export class DisplayBookComponent implements OnInit {
   searchText: string = '';
 
   onSearchTextEntered(searchValue: string) {
-    this.searchText = searchValue;
+    this.searchText = searchValue.toLowerCase();
     //console.log(this.searchText);
   }
 
   updateBook(_id: number) {
     this.router.navigate(['/updateBook', _id])
+  }
+
+  UserAuthorization() {
+    return this.authenticationService.isUser()
+  }
+
+  AuthorAutherization() {
+    return this.authenticationService.isAuthor()
   }
 
   // deleteBook(id: number) {

@@ -16,9 +16,15 @@
         <div>{{listofBooks.synopsis}}</div>
     </div>
     <div class="container book-comments">
-        <div class="comments">Comments: </div>
-        <div class="addComment">
-            <input class="input" placeholder="Add a Comment" id="comment" #comment>
-        </div>
+        <form [formGroup]="addComment">
+            <div class="comments">Comments: </div>
+            <div *ngFor="let c of comment">
+                <div>{{c.comment}}</div>
+            </div>
+            <div class="addComment">
+                <input class="input" placeholder="Add a Comment" formControlName="comment" id="comment">
+                <button type="submit" (click)="onSubmit()">Post</button>
+            </div>
+        </form>
     </div>
 </div>

@@ -35,11 +35,21 @@ const db = client.db('readItData');
 
 // add new book into database
 router.route('/books').post(function (req, res) {
-    db.collection('books').insertOne(req.body, (err, results) => {
-        if (err) return console.log(err);
-        console.log('saved to database');
-        res.send(results);
-    })
+    try {
+        var decoded = jwt.verify(req.body.token, secret);
+        doc = {
+            'name': req.body.name,
+            'author': req.body.author,
+            'synopsis': req.body.synopsis
+        }
+        db.collection('books').insertOne(doc, (err, results) => {
+            if (err) return console.log(err);
+            console.log('saved to database');
+            res.send(results);
+        })
+    } catch (error) {
+        res.send({result: 'invalid token'})
+    }
 })
 
 // retrieve book information from database
@@ -71,11 +81,20 @@ router.route('/books/:_id/:token').delete(function (req, res) {
 
 // update books information based on id
 router.route('/books/:_id').put(function (req, res) {
-    db.collection('books').updateOne({ "_id": ObjectId(req.params._id) }, {
-        $set: req.body
-    }, (err, results) => {
-        res.send(results);
-    });
+    try {
+        var decoded = jwt.verify(req.body.token, secret);
+        db.collection('books').updateOne({ "_id": ObjectId(req.params._id) }, {
+            $set: {
+                'name': req.body.name,
+                'author': req.body.author,
+                'synopsis': req.body.synopsis
+            }
+        }, (err, results) => {
+            res.send(results);
+        });
+    } catch (error) {
+        res.send({result: 'invalid token'})
+    }
 });
 
 // creating a route '/loginUser' to validate the username and password with MongoDB and to return the user's role and login if successful
@@ -126,7 +145,29 @@ router.route('/registerUser').post(function (req, res) {
 })
 
 //creating a route to comment on book based on the id
-router.route('/books/:_id').post(function (res, req) {
+router.route('/comments').post(function (req, res) {
+    try {
+        var decoded = jwt.verify(req.body.token, secret);
+        doc = {
+            'comment': req.body.comment,
+            'bookId': req.body.bookId
+        }
+        db.collection('comments').insertOne(doc, (err, results) => {
+            if (err) return console.log(err);
+            console.log('saved to database');
+            res.send(results);
+        })
+    } catch (error) {
+        res.send({result: 'invalid token'})
+    }
+})
+
+//creating a route to find and display comments based on Id
+router.route('/comments/:bookId').get(function (req, res) {
+    db.collection('comments').find({'bookId':req.params.bookId}).toArray((err, results) => {
+        if (err) return console.log(err);
+        res.send(results);
+    })
 })
 
 module.exports = router;

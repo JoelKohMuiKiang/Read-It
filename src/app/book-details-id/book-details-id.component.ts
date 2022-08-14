@@ -14,20 +14,39 @@ import { ObjectId } from 'mongodb';
 export class BookDetailsIdComponent implements OnInit {
   listofBooks: any;
   _id: string
-  
+
+  comment: any = []; 
 
   constructor(private route: ActivatedRoute, private booksService: BooksService, private fb: FormBuilder) { 
-      this.route.params.subscribe(params => {
-        this._id = params['id'];
+    this.route.params.subscribe(params => {
+      this._id = params['id'];
 
-        this.booksService.getBook(this._id).subscribe(value => {
-          this.listofBooks = value;
-          booksService.listofBooks = value;
-          console.log(this.listofBooks)
-        });
-      })  
-    
+      this.booksService.getBook(this._id).subscribe(value => {
+        this.listofBooks = value;
+        booksService.listofBooks = value;
+      });
+
+      this.booksService.getComments(this._id).subscribe(value => {
+        this.comment = value;
+      })
+    })  
   }
+
+  addComment: FormGroup;
+
+  ngOnInit(): void {
+    this.addComment = this.fb.group({
+      comment: '',
+    })
+  }
+
+  onSubmit() {
+    this.booksService.addComment(this.addComment.value.comment, sessionStorage.getItem('token'), this._id).subscribe(result => {
+      location.reload();
+      this.addComment.reset();
+    });
+  }
+
 
   // ngOnInit(): void {
   //   this.sub = this.route.params.subscribe(params => {
@@ -36,10 +55,6 @@ export class BookDetailsIdComponent implements OnInit {
   //     this.book = this.service.getBook(this.id);
   //   })  
   // }
-
-  ngOnInit(): void {
-    
-  }
 
 
 

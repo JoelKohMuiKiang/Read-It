@@ -49,7 +49,7 @@ export class AddBookComponent implements OnInit {
     //     duration: 1000
     //   });
 
-    this.booksService.addBooks(this.createForm.value.name, this.createForm.value.author, this.createForm.value.synopsis).subscribe(results => {
+    this.booksService.addBooks(this.createForm.value.name, this.createForm.value.author, this.createForm.value.synopsis, sessionStorage.getItem('token')).subscribe(results => {
         location.reload
       })
 

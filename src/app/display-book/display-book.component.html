@@ -1,5 +1,5 @@
 <div style="text-align: center">
-    <h1>List of Books</h1>
+    <h1 style="margin-top: 10px">List of Books</h1>
     <app-search (searchTextChanged)="onSearchTextEntered($event)"></app-search>
 </div>
 
@@ -10,8 +10,8 @@
             <th>Author</th>
             <th>Synopsis</th>
             <th>View</th>
-            <th>Update</th>
-            <th>Delete</th>
+            <th *ngIf="AuthorAutherization()">Update</th>
+            <th *ngIf="AuthorAutherization()">Delete</th>
         </tr>
     </thead>
     <tbody *ngFor="let b of listofBooks">
@@ -20,14 +20,14 @@
             <td>{{b.author}}</td>
             <td>{{b.synopsis}}</td>
             <td><button [routerLink]="['/bookDetails', b._id]">View</button></td>
-            <td><button (click)="updateBook(b._id)">Update</button></td>
-            <td><button (click)="deleteBook(b._id)">Delete</button></td>
+            <td *ngIf="AuthorAutherization()"><button (click)="updateBook(b._id)">Update</button></td>
+            <td *ngIf="AuthorAutherization()"><button (click)="deleteBook(b._id)">Delete</button></td>
         </tr>
     </tbody>
 </table>
 
 <div class="container">
-    <div class="center">
+    <div class="center" *ngIf="AuthorAutherization()">
         <button class="nav-link" routerLink="/addBook" routerLinkActive="active">Add your book here!</button>
     </div>
 </div>

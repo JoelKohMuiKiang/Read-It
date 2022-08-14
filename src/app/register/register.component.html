@@ -1,16 +1,19 @@
-<div class="container">
+<div class="container" style="margin-top: 20px; text-align: center;">
+    <h1>Register!</h1>
     <form [formGroup]="registerForm" novalidate (ngSubmit)="onSubmit()">
-        <p>
-            Please state your name
-            <input formControlName="name" id="name" placeholder="Your name" />
+        <p style="margin-top: 20px;">
+            Please state your username: 
+            <input formControlName="name" id="name" placeholder="Name" />
         </p>
         <p>
-            Please input your password
-            <input formControlName="password" id="password" placeholder="Your password" />
+            Please state your password: 
+            <input formControlName="password" id="password" type="password" placeholder="Password" />
         </p>
         <p>
-            What role do you want to have
-            <input formControlName="role" id="role" placeholder="user/author" />
+            Pick a role:
+        </p>
+        <p>
+            <input formControlName="role" id="role" placeholder="user/author"/>
         </p>
         <p><button class="btn btn-primary" type="submit">Register</button></p>
     </form>

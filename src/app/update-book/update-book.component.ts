@@ -62,7 +62,7 @@ export class UpdateBookComponent implements OnInit {
       let author = this.updateForm.value.author;
       let synopsis = this.updateForm.value.synopsis;
 
-      this.booksService.updateBook(this.id, name, author, synopsis).subscribe(results => {
+      this.booksService.updateBook(this.id, name, author, synopsis, sessionStorage.getItem('token')).subscribe(results => {
         location.reload();
       })
       this.Router.navigate(['/displayBook'])

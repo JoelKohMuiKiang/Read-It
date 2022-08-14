@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class AuthenticationService {
   register_user_url: string = "http://localhost:3000/api/registerUser";
   login_user: string = 'http://localhost:3000/api/loginUser';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   //takes in username and password and use it to make an API call to create the user into MongoDb
   registerUser(username: string, password: string, role: string) {
