@@ -119,8 +119,6 @@ router.route('/loginUser').post(function (req, res2) {
     });
 });
 
-//creating a function 
-
 //creaing a route '/registerUser' to store the username and password into MongoDb
 router.route('/registerUser').post(function (req, res) {
     var username = req.body.username;

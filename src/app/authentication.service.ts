@@ -67,7 +67,7 @@ export class AuthenticationService {
 
   //returns true if a normal user had logged into the web app
   isUser() {
-    return (this.getUserRole() == "user" || this.getUserRole() == "author");
+    return (this.getUserRole() == "user");
   }
 
 }

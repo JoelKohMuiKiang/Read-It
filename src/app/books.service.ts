@@ -15,10 +15,12 @@ export class BooksService {
 
     constructor(private http:HttpClient) {}
 
+    //perform HTTP get request to /api/books
     getBooks() {
         return this.http.get<Books[]>(this.url)
     }
 
+    //perform HTTP post request to /api/books
     addBooks(name: string, author: string, synopsis: string, token: string) {
         return this.http.post<Books[]>(this.url, {'name': name, 'author': author, 'synopsis': synopsis, 'token': token})
     }
@@ -38,7 +40,7 @@ export class BooksService {
         return this.http.delete<Books[]> (this.url + '/' + _id + '/' + token);
     }
 
-    // perfrom HTTP post request to /apip/comments
+    // perfrom HTTP post request to /api/comments
     addComment(comment: string, token: string, bookId: string) {
         return this.http.post<Comments[]> (this.urlComment, {'comment': comment, 'token': token, 'bookId': bookId})
     }
